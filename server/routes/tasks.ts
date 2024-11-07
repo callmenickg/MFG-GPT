@@ -1,9 +1,10 @@
 export default eventHandler(async (event) => {
+
+    const accountId = process.env.ACCOUNT_ID
+    const projectId = process.env.PROJECT_ID
+
     async function getBasecampTasks(accountId, projectId) {
-        const url = `https://3.basecampapi.com/5719566/buckets/35666650/todosets/6884316300/todolists.json`
-      //  https://3.basecampapi.com/5719566/buckets/35666650/todolists/7983935986.json
-      //  `https://3.basecampapi.com/5719566/buckets/35666650/todosets/6884316300.json`
-       // `https://3.basecampapi.com/${accountId}/projects/${projectId}.json`;
+        const url = `https://3.basecampapi.com/${accountId}/buckets/${projectId}/todosets/6884316300/todolists.json`
         try {
             const response = await fetch(url, {
                 method: 'GET',
@@ -25,9 +26,6 @@ export default eventHandler(async (event) => {
             return { error: error.message };
         }
     }
-
-    const accountId = '5719566';
-    const projectId = '35666650';
 
     const data = await getBasecampTasks(accountId, projectId);
     return data;

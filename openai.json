@@ -1,0 +1,330 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Basecamp Tasks API",
+        "description": "API for fetching tasks from a specific Basecamp project.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://3.basecampapi.com/{accountId}/buckets/{projectId}/todosets/6884316300/todolists.json",
+            "description": "Basecamp API Server",
+            "variables": {
+                "accountId": {
+                    "default": "5719566",
+                    "description": "Basecamp account ID"
+                },
+                "projectId": {
+                    "default": "35666650",
+                    "description": "Basecamp project ID"
+                }
+            }
+        }
+    ],
+    "paths": {
+        "/{accountId}/buckets/{projectId}/todosets/6884316300/todolists.json": {
+            "get": {
+                "summary": "Retrieve Basecamp tasks for a specific project",
+                "operationId": "getBasecampTasks",
+                "parameters": [
+                    {
+                        "name": "accountId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The account ID in Basecamp."
+                    },
+                    {
+                        "name": "projectId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The project ID in Basecamp."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved tasks",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Task"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized, invalid or missing Bearer token"
+                    },
+                    "404": {
+                        "description": "Not found, invalid account or project ID"
+                    },
+                    "500": {
+                        "description": "Internal server error, failed to retrieve tasks"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "schemas": {
+            "Task": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "Unique identifier for the task"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Status of the task (e.g., 'active')"
+                    },
+                    "visible_to_clients": {
+                        "type": "boolean",
+                        "description": "Indicates if the task is visible to clients"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Task creation timestamp"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Task update timestamp"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Title of the task"
+                    },
+                    "inherits_status": {
+                        "type": "boolean",
+                        "description": "Whether the task inherits status from the parent"
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "Type of the item (e.g., 'Todolist')"
+                    },
+                    "url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "API URL for the task"
+                    },
+                    "app_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "Web application URL for the task"
+                    },
+                    "bookmark_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "Bookmark URL for the task"
+                    },
+                    "subscription_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "URL for task subscription"
+                    },
+                    "comments_count": {
+                        "type": "integer",
+                        "description": "Number of comments on the task"
+                    },
+                    "comments_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "URL for accessing task comments"
+                    },
+                    "position": {
+                        "type": "integer",
+                        "description": "Position of the task within the list"
+                    },
+                    "parent": {
+                        "$ref": "#/components/schemas/Parent"
+                    },
+                    "bucket": {
+                        "$ref": "#/components/schemas/Bucket"
+                    },
+                    "creator": {
+                        "$ref": "#/components/schemas/Creator"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Description of the task"
+                    },
+                    "completed": {
+                        "type": "boolean",
+                        "description": "Indicates if the task is completed"
+                    },
+                    "completed_ratio": {
+                        "type": "string",
+                        "description": "Ratio indicating completion status"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the task"
+                    },
+                    "todos_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "URL to the task's todos"
+                    },
+                    "groups_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "URL to task groups"
+                    },
+                    "app_todos_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "Web app URL for task todos"
+                    }
+                }
+            },
+            "Parent": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "Unique identifier for the parent"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Title of the parent entity"
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "Type of the parent entity (e.g., 'Todoset')"
+                    },
+                    "url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "API URL for the parent"
+                    },
+                    "app_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "Web application URL for the parent"
+                    }
+                }
+            },
+            "Bucket": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "Unique identifier for the bucket"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the project bucket"
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "Type of the bucket (e.g., 'Project')"
+                    }
+                }
+            },
+            "Creator": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "Unique identifier for the creator"
+                    },
+                    "attachable_sgid": {
+                        "type": "string",
+                        "description": "Attachable unique identifier"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the creator"
+                    },
+                    "email_address": {
+                        "type": "string",
+                        "description": "Email address of the creator"
+                    },
+                    "personable_type": {
+                        "type": "string",
+                        "description": "Type of person (e.g., 'User')"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Job title of the creator"
+                    },
+                    "bio": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Biography of the creator"
+                    },
+                    "location": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Location of the creator"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Creator's creation timestamp"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Creator's last updated timestamp"
+                    },
+                    "admin": {
+                        "type": "boolean",
+                        "description": "Indicates if the creator is an admin"
+                    },
+                    "owner": {
+                        "type": "boolean",
+                        "description": "Indicates if the creator is an owner"
+                    },
+                    "client": {
+                        "type": "boolean",
+                        "description": "Indicates if the creator is a client"
+                    },
+                    "employee": {
+                        "type": "boolean",
+                        "description": "Indicates if the creator is an employee"
+                    },
+                    "time_zone": {
+                        "type": "string",
+                        "description": "Time zone of the creator"
+                    },
+                    "avatar_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "URL for the creator's avatar"
+                    },
+                    "can_manage_projects": {
+                        "type": "boolean",
+                        "description": "Indicates if the creator can manage projects"
+                    },
+                    "can_manage_people": {
+                        "type": "boolean",
+                        "description": "Indicates if the creator can manage people"
+                    }
+                }
+            }
+        }
+    }
+}

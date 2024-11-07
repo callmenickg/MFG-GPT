@@ -2,5 +2,8 @@
 export default defineNitroConfig({
   srcDir: "server",
   compatibilityDate: "2024-11-05",
-  preset: "netlify"
+  preset: "netlify",
+  experimental: {
+    openAPI: true,
+  }
 });
